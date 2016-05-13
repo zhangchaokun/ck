@@ -1,4 +1,4 @@
-<?php
+<?php if(!defined('BASEPATH')) exit('禁止直接访问脚本!');
 /**
  * CK框架
  *
@@ -43,6 +43,13 @@ class CK_Router{
     public $method = 'index';
 
     /**
+     * 控制器类子目录
+     * @var string
+     * @access public
+     */
+    public $directory = '';
+
+    /**
      * 默认控制器
      * @var    string
      * @access public
@@ -67,8 +74,8 @@ class CK_Router{
      * @author  菜鸟CK
      */
     public function set_routing(){
-        if(is_file('routes.php')){
-            include('routes.php');
+        if(is_file(APPPATH.'config/routes.php')){
+            include(APPPATH.'config/routes.php');
         }
         $this->routes = (!isset($route) or !is_array($route)) ? array() : $route;
         $this->default_controller = (!isset($this->routes['default_controller']) or $this->routes['default_controller'] == '') ? false : $this->routes['default_controller'];
@@ -174,7 +181,28 @@ class CK_Router{
     }
 
 
+    // --------------------------------------------------------------------
+    /**
+     * 设置目录名称
+     * @access  public
+     * @param   string
+     * @return  void
+     * @author  菜鸟CK
+     */
+    public function set_directory($dir){
+        $this->directory = str_replace(array('/', '.'), '', $dir).'/';
+    }
 
+    // --------------------------------------------------------------------
+    /**
+     * 获取包含请求的控制器类的子目录(如果有的话)
+     * @access  public
+     * @return  string
+     * @author  菜鸟CK
+     */
+    public function fetch_directory(){
+        return $this->directory;
+    }
 
 
 

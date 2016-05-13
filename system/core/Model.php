@@ -1,4 +1,4 @@
-<?php
+<?php if(!defined('BASEPATH')) exit('禁止直接访问脚本!');
 /**
  * CK框架
  *

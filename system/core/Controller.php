@@ -1,4 +1,4 @@
-<?php
+<?php if(!defined('BASEPATH')) exit('禁止直接访问脚本!');
 /**
  * CK框架
  *
@@ -32,7 +32,7 @@ class CK_Controller{
         foreach (is_loaded() as $var => $class) {
             $this->$var =& load_class($class);
         }
-        $this->load =& load_class('Loader');
+        $this->load =& load_class('Loader','core');
         $this->load->initialize();
     }
 
