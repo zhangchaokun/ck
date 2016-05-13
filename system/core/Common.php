@@ -168,11 +168,29 @@ if(!function_exists('show_error')){
  * @author   菜鸟CK
  */
 if(!function_exists('show_404')){
-    function show_404($page = '', $log_error = TRUE)
+    function show_404($page = '', $log_error = true)
     {
         $_error =& load_class('Exceptions', 'core');
         $_error->show_404($page, $log_error);
         exit;
+    }
+}
+
+// ------------------------------------------------------------------------
+/**
+ * 错误日志写入
+ * @access  public
+ * @return  void
+ */
+if(!function_exists('log_message')){
+    function log_message($level = 'error', $message, $php_error = false)
+    {
+        static $_log;
+        if(config_item('log_threshold') == 0){
+            return;
+        }
+        $_log =& load_class('Log');
+        $_log->write_log($level, $message, $php_error);
     }
 }
 
@@ -270,6 +288,38 @@ if(!function_exists('is_php')){
             $_is_php[$version] = (version_compare(PHP_VERSION, $version) < 0) ? false : true;
         }
         return $_is_php[$version];
+    }
+}
+
+// ------------------------------------------------------------------------
+/**
+ * 文件是否可写
+ * @access   public
+ * @return   void
+ * @author   菜鸟CK
+ */
+if(!function_exists('is_really_writable')){
+    function is_really_writable($file)
+    {
+        if (DIRECTORY_SEPARATOR == '/' and @ini_get("safe_mode") == false){
+            return is_writable($file);
+        }
+
+        if(is_dir($file)){
+            $file = rtrim($file, '/').'/'.md5(mt_rand(1,100).mt_rand(1,100));
+            if (($fp = @fopen($file, FOPEN_WRITE_CREATE)) === false){
+                return false;
+            }
+            fclose($fp);
+            @chmod($file, DIR_WRITE_MODE);
+            @unlink($file);
+            return true;
+        }elseif(!is_file($file) or ($fp = @fopen($file, FOPEN_WRITE_CREATE)) === false){
+            return false;
+        }
+
+        fclose($fp);
+        return true;
     }
 }
 
