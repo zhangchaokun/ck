@@ -23,7 +23,7 @@ define('CK_VERSION', '1.0.0');
  * 框架分支(Core = true, Reactor = false)
  * @var boolean
  */
-define('CI_CORE', false);
+define('CK_CORE', false);
 
 /*
  * ------------------------------------------------------
